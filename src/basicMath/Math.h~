@@ -1,0 +1,510 @@
+#ifndef MATH_H_
+#define MATH_H_
+
+#include <cmath>
+#include <cstdlib>
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
+#ifndef MAXFLOAT
+#define MAXFLOAT 1.0E+20
+#endif
+
+static const double
+	smallEPS = 1.01E-10,
+	mediumEPS = 1.01E-5,
+	largeEPS = 1.01E-3,
+    Pi            = 3.14159265358979,
+    PiSquared     = Pi * Pi,
+    TwoPi            = 2.0 * Pi,
+    twoPiSqrt      = sqrt(2.0*Pi),
+    FourPi            = 4.0 * Pi,
+    PiOverTwo     = Pi / 2.0,
+    PiOverThree   = Pi / 3.0,
+    TwoPiOverThree= Pi / 1.5,   // 120.0
+    PiOverFour    = Pi / 4.0,
+    OverPi        = 1.0 / Pi,
+    OverTwoPi     = 1.0 / TwoPi,
+    OverFourPi    = 1.0 / FourPi,
+    Infinity      = MAXFLOAT,
+    Tiny          = 1.0 / MAXFLOAT,
+    DegreesToRad  = Pi / 180.0,
+    deg2Rad = DegreesToRad,
+    RadToDegrees  = 180.0 / Pi,
+    rad2Deg = RadToDegrees
+    ;
+
+static const unsigned short
+dim2 = 2,
+dim3= 3,
+dim4= 4,
+dim5 = 5,
+dim6 = 6,
+dim7 = 7,
+dim8 = 8,
+dim9 = 9,
+dim10 = 10,
+dim12 = 12,
+dim13 = 13,
+dim15 = 15;
+
+static const double sqrt2 = sqrt(2.0);
+static const double sqrt2OverTwo =  0.50 * sqrt2;
+static const double sqrt3 = sqrt(3.0);
+static const double PiOverSix       = 0.50 *PiOverThree;
+
+inline int    Odd   ( int    k           ) { return k & 1; }
+inline int    Even  ( int    k           ) { return !(k & 1); }
+inline float  Abs   ( int    x           ) { return x > 0  ? x : -x; }
+inline float  Abs   ( float  x           ) { return x > 0. ? x : -x; }
+inline float  Abs   ( double x           ) { return x > 0. ? x : -x; }
+
+inline int  iMin   ( int x, int y ) { return x < y ? x : y; }
+inline int  iMax   ( int  x, int y ) { return x > y ? x : y; }
+inline float  fMin   ( float  x, float  y ) { return x < y ? x : y; }
+inline float  fMax   ( float  x, float  y ) { return x > y ? x : y; }
+inline double dMin  ( double x, double y ) { return x < y ? x : y; }
+inline double dMax  ( double x, double y ) { return x > y ? x : y; }
+inline float  Sqr   ( int    x           ) { return x * x; }
+inline float  Sqr   ( float  x           ) { return x * x; }
+inline float  Sqr   ( double x           ) { return x * x; }
+inline float  Sqrt  ( double x           ) { return x > 0. ? sqrt(x) : 0.; }
+inline float  Cubed ( float  x           ) { return x * x * x; }
+inline int    Sign  ( float  x           ) { return x > 0. ? 1 : (x < 0. ? -1 : 0); }
+inline void   Swap  ( float &a, float &b ) { float c = a; a = b; b = c; }
+inline void   Swap  ( int   &a, int   &b ) { int   c = a; a = b; b = c; }
+inline double Sin   ( double x, int    n ) { return pow( sin(x), n ); }
+inline double Cos   ( double x, int    n ) { return pow( cos(x), n ); }
+inline float  ToSin ( double x           ) { return Sqrt( 1.0 - Sqr(x) ); }
+inline float  ToCos ( double x           ) { return Sqrt( 1.0 - Sqr(x) ); }
+inline float  Pythag( double x, double y ) { return Sqrt( x*x + y*y ); }
+
+inline double ArcCos( double x ){
+	double y;
+	if( -1.0 <= x && x <= 1.0 ) y = acos( x );
+	else if( x >  1.0 ) y = 0.0;
+	else if( x < -1.0 ) y = Pi;
+	return y;
+}
+
+inline double ArcSin( double x ){
+	if( x < -1.0 ) x = -1.0;
+	if( x >  1.0 ) x =  1.0;
+	return asin( x );
+}
+
+inline float Clamp( float min, float &x, float max ){
+	if( x < min ) x = min; else
+		if( x > max ) x = max;
+	return x;
+}
+
+inline double Clamp( float min, double &x, float max ){
+	if( x < min ) x = min; else
+		if( x > max ) x = max;
+	return x;
+}
+
+inline int iMax( int x, int y, int z ){
+	int t;
+	if( x >= y && x >= z ) t = x;
+	else if( y >= z ) t = y;
+	else t = z;
+	return t;
+}
+
+inline int iMin( int x, int y, int z ){
+	int t;
+	if( x <= y && x <= z ) t = x;
+	else if( y <= z ) t = y;
+	else t = z;
+	return t;
+}
+
+inline float fMax( float x, float y, float z ){
+	float t;
+	if( x >= y && x >= z ) t = x;
+	else if( y >= z ) t = y;
+	else t = z;
+	return t;
+}
+
+inline float fMin( float x, float y, float z ){
+	float t;
+	if( x <= y && x <= z ) t = x;
+	else if( y <= z ) t = y;
+	else t = z;
+	return t;
+}
+
+inline double dMax( double x, double y, double z ){
+	double t;
+	if( x >= y && x >= z ) t = x;
+	else if( y >= z ) t = y;
+	else t = z;
+	return t;
+}
+
+inline double dMin( double x, double y, double z ){
+	double t;
+	if( x <= y && x <= z ) t = x;
+	else if( y <= z ) t = y;
+	else t = z;
+	return t;
+}
+
+inline float Pythag( float x, float y, float z ){
+	return sqrt( x * x  +  y * y  +  z * z );
+}
+
+  /** calculate the angles between two vectors v1 and v2
+     * The returned angle is in the [0,Pi] range or the cosine value (not the value of angle).
+     */
+inline double interAngle(double * const v1, double * const v2, const int dim){
+	double v1Len = 0.0, v2Len = 0.0;
+	for (int i = 0; i < dim; i++)
+		v1Len += v1[i]*v1[i];
+//	v1Len = sqrt(v1Len);
+	for (int i = 0; i < dim; i++)
+		v2Len += v2[i]*v2[i];
+//	v2Len = sqrt(v2Len);
+	if ( v1Len < Tiny || v2Len < Tiny){
+		cout<<"divide by ZERO in interAngle \n";
+		exit(1);
+	}
+	return ( (v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2]) / ( sqrt(v1Len * v2Len) ) );
+	//  	return Math.acos(c);  //acos [0, PI] so should be OK
+}
+
+
+/** calculate the angles between two vectors v1 and v2
+   * The returned angle is in the [0,Pi] range or the cosine value (not the value of angle).
+   */
+inline bool interAngle(double *v1, double *v2, const int dim, double &angle){
+	double v1Len = 0.0, v2Len = 0.0;
+	for (int i = 0; i < dim; i++)
+		v1Len += v1[i]*v1[i];
+//	v1Len = sqrt(v1Len);
+	for (int i = 0; i < dim; i++)
+		v2Len += v2[i]*v2[i];
+//	v2Len = sqrt(v2Len);
+	if ( v1Len < Tiny || v2Len < Tiny){
+		cout<<"divide by ZERO in interAngle \n";
+		return false;
+	}
+	angle = (v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2]) / ( sqrt(v1Len * v2Len) ) ;
+	return true;
+	//  	return Math.acos(c);  //acos [0, PI] so should be OK
+}
+
+
+inline double interAngleF(float *v1, float *v2, const int dim){
+	float v1Len = 0.0, v2Len = 0.0;
+	for (int i = 0; i < dim; i++)
+		v1Len += v1[i]*v1[i];
+	v1Len = sqrt(v1Len);
+	for (int i = 0; i < dim; i++)
+		v2Len += v2[i]*v2[i];
+	v2Len = sqrt(v2Len);
+	if ( v1Len < Tiny || v2Len < Tiny){
+		cout<<"divide by ZERO in interAngle \n";
+		exit(1);
+	}
+	return ( (v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2]) / (v1Len * v2Len) );
+	//  	return Math.acos(c);  //acos [0, PI] so should be OK
+}
+
+//
+//inline bool interAngleD( double *const v1, double *const v2,
+//		const size_t dim, double& angle){
+//	double v1Len = 0.0, v2Len = 0.0;
+//	for (unsigned int i = 0; i < dim; i++)
+//		v1Len += v1[i] * v1[i];
+//	v1Len = sqrt(v1Len);
+//	for (unsigned int i = 0; i < dim; i++)
+//		v2Len += v2[i] * v2[i];
+//	v2Len = sqrt(v2Len);
+//	if ( v1Len < Tiny || v2Len < Tiny){
+//		cout<<"divide by ZERO in interAngle \n";
+//		return false;
+//	}
+//	double cosValue = 0.0;
+//	for (unsigned int i = 0; i < dim; i++)
+//		cosValue += v1[i] * v2[i];
+//	angle = cosValue 	/ (v1Len * v2Len) ;
+//	return true;
+//	//  	return Math.acos(c);  //acos [0, PI] so should be OK
+//}
+
+    /** cal the directioal cosines of the vector vec */
+inline double* dirCos(double *vec, int dim) {
+	double len = 0.0;
+	double *dirs = new double[dim];
+	for (int i = 0; i < dim; i++)
+		len += vec[i] * vec[i];
+	len = sqrt(len);
+	if ( len < Tiny ){
+		cout<<"divide by ZERO in interAngle \n";
+		exit(1);
+	}
+	for (int j=0; j<dim; j++)
+		dirs[j] = vec[j] / len;
+	return dirs;
+}
+
+/** cal the polar coordinate  of the vector vec */
+inline double* polarCoord(double *vec, int dim) {
+	double len = 0.0;
+	double *dirs = new double[dim];
+	for (int i = 0; i < dim; i++)
+		len += vec[i] * vec[i];
+	len = sqrt(len);
+	if ( len < Tiny ){
+		cout<<"divide by ZERO in interAngle \n";
+		exit(1);
+	}
+	if ( dim != 3 ){
+		cout<<"This polar function only for 3D \n";
+		exit(1);
+	}
+
+	for (int j=0; j<dim; j++)
+		dirs[j] = vec[j] / len;
+	dirs[0] = acos( sqrt (dirs[0] * dirs[0]  + dirs[1] * dirs[1] ) / len);
+	if ( dirs[2] < 0)
+		dirs[0]  = Pi - dirs[0];
+	if ( fabs(dirs[0] ) < Tiny){
+		dirs[1] = 0.0;
+		return dirs;
+	}
+	double sinF = vec[1] / ( len * dirs[0] );
+	double cosF = vec[0] / ( len * dirs[0] );
+	if( sinF >= 0.0)
+		dirs[1] = acos(cosF);
+	else
+		dirs[1] = TwoPi - acos(cosF);
+
+	return dirs;
+}
+
+/** cal the polar coordinate  of the vector vec */
+inline float* polarCoordF(float *vec, int dim) {
+	float len = 0.0;
+	float *dirs = new float[dim];
+	for (int i = 0; i < dim; i++)
+		len += vec[i] * vec[i];
+	len = sqrt(len);
+	if ( len < Tiny ){
+		cout<<"divide by ZERO in interAngle \n";
+		exit(1);
+	}
+	if ( dim != 3 ){
+		cout<<"This polar function only for 3D \n";
+		exit(1);
+	}
+
+	for (int j=0; j<dim; j++)
+		dirs[j] = vec[j] / len;
+	dirs[0]= acos( dirs[2]);
+	float sinT = sqrt( 1.0 - dirs[2] * dirs[2]);  // 1 - cos^2_{theta}
+	if ( fabs(sinT ) < Tiny){
+		dirs[1] = 0.0;
+		dirs[2] = len;
+		return dirs;
+	}
+	float sinF = vec[1] / ( len * sinT );
+	float cosF = vec[0] / ( len * sinT);
+//	cout<<sinF<<"  "<<cosF<<endl;
+	if( sinF >= 0.0)
+		dirs[1] = acos(cosF);
+	else
+		dirs[1] = TwoPi - acos(cosF);
+	dirs[2] = len;
+	return dirs;
+}
+    /**
+     * A method for generating the internuclear vector between two atoms
+     @param n1 the coordinate for the nucleus of the atom 1
+     @param n2 the coordinate for the nucleus of the atom 2
+     @return a vector from n1->n2
+    */
+
+inline double Distance(double *n1, double *n2, const size_t dim = 3){
+	double sum =0.0;
+	for (unsigned int i = 0; i < dim; i++)
+		sum += ( n2[i] -  n1[i] ) * ( n2[i] -  n1[i] ) ;
+	return sqrt(sum);
+}
+
+inline float DistanceF(float *n1, float *n2, const size_t dim = 3){
+	float sum =0.0;
+	for (unsigned int i = 0; i < dim; i++)
+		sum += ( n2[i] -  n1[i] ) * ( n2[i] -  n1[i] ) ;
+	return sqrt(sum);
+}
+
+
+inline double Distsq(double *n1, double *n2, const size_t dim = 3){
+	double sum =0.0;
+	for (unsigned int i = 0; i < dim; i++)
+		sum += ( n2[i] -  n1[i] ) * ( n2[i] -  n1[i] ) ;
+	return sum;
+}
+
+inline void Norm(double *x, double *xnorm) {
+  /* RETURNS INPUT VECTOR X NORMALIZED TO UNIT LENGTH.
+     XNORM IS THE ORIGINAL LENGTH OF X.                         */
+  double TEMP, TEMP1, TEMP2;
+
+  TEMP = x[0];
+  TEMP1 = x[1];
+  TEMP2 = x[2];
+  *xnorm = TEMP * TEMP + TEMP1 * TEMP1 + TEMP2 * TEMP2;
+  if (*xnorm <= 0.0)
+    return;
+  *xnorm = sqrt(*xnorm);
+  x[0] /= *xnorm;
+  x[1] /= *xnorm;
+  x[2] /= *xnorm;
+}
+
+inline void Diff(double *x, double *y, double *z, const size_t dim = 3){
+	for ( unsigned int i = 0; i < dim; i++ )
+		z[i]= x[i] - y[i];
+}
+
+inline double Dot(double *x, double *y){
+	return x[0] * y[0] + x[1] * y[1] + x[2] * y[2];
+}
+
+inline void Cross(double *x, double *y, double *z){
+	z[0] = x[1] * y[2] - y[1] * x[2];
+	z[1] = x[2] * y[0] - y[2] * x[0];
+	z[2] = x[0] * y[1] - y[0] * x[1];
+}
+
+    inline float *addCoords( float*n1, float*n2, int dim){
+    	float *sum = new float[dim];
+    	for (int i = 0; i < dim; i++)
+    		sum[i] = n2[i] + n1[i];
+        return sum;
+    }
+
+    inline float *aveCoords(float *n1, float *n2, int dim){
+    	float *ave = new float[dim];
+    	for (int i = 0; i < dim; i++)
+    		ave[i] = 0.50 * ( n2[i] + n1[i] );
+    	return ave;
+    }
+
+    inline float *internuclearVec( float*n1, float*n2, int dim){
+    	float *sum = new float[dim];
+    	for (int i = 0; i < dim; i++)
+    		sum[i] = n2[i] -  n1[i];
+    	return sum;
+    }
+
+    inline void internuclearVec( double *const n1, double *const n2,
+    		double sum[], int dim ){
+    	for (int i = 0; i < dim; i++)
+    		sum[i] = n2[i] -  n1[i];
+    }
+
+    inline vector<double> n1ToN2VecD( double *n1, double *n2, int dim){
+    	vector<double> sum(dim, 0.0);
+    	for (int i = 0; i < dim; i++)
+    		sum[i] = n2[i] -  n1[i];
+    	return sum;
+    }
+
+//    inline float *internuclearVec(  float*n1, const vector<float>&n1, int dim){
+//    	float *sum = new float[dim];
+//    	for (int i = 0; i < dim; i++)
+//    		sum[i] = n2[i] -  n1[i];
+//    	return sum;
+//    }
+
+    inline float norm( float *vec, int dim){
+    	float len = 0.0;
+    	for (int i=0; i< dim; i++)
+    		len += vec[i] * vec[i];
+    	return  sqrt(len);
+    }
+
+    inline double norm( vector<float>& vec, const size_t dim){
+    	double len = 0.0;
+    	for (unsigned int i=0; i< dim; i++)
+    		len += vec[i] * vec[i];
+    	len = sqrt(len);
+    	for (unsigned int i=0; i< dim; i++)
+    		vec[i] /= len;
+    	return  len;
+    }
+
+    inline double norm( vector<double>& vec, const size_t dim){
+    	double len = 0.0;
+    	for (unsigned int i=0; i< dim; i++)
+    		len += vec[i] * vec[i];
+    	len = sqrt(len);
+    	for (unsigned int i=0; i< dim; i++)
+    		vec[i] /= len;
+    	return  len;
+    }
+
+    inline float normSquare( float*vec, int dim){
+    	float len = 0.0;
+    	for (int i=0; i< dim; i++)
+    		len += vec[i] * vec[i];
+    	return  len;
+    }
+
+    inline void printArray(string name, double *const n1, int d){
+     	printf("%5s", name.c_str() );
+    	for (int i=0; i<d; i++)
+    		printf("%10.5f", n1[i]);
+    	cout<<endl;
+    }
+
+    inline void printArray(string name, const vector<double> &n1 ){
+    	printf("%5s", name.c_str() );
+    	for (int i=0; i< n1.size(); i++)
+    		printf("%10.5f", n1[i]);
+    	cout<<endl;
+    }
+
+    inline void printArray(double *const n1, int d){
+    	for (int i=0; i<d; i++)
+    		printf("%16.8f", n1[i]);
+    	cout<<endl;
+    }
+
+    inline void printArray(const vector<double> &n1 ){
+    	for (int i=0; i< n1.size(); i++)
+    		printf("%16.8f", n1[i]);
+    	cout<<endl;
+    }
+
+    inline  float InvSqrt (float x){
+    	float xhalf = 0.5f*x;
+    	int i = *(int*)&x;
+    	i = 0x5f3759df - (i>>1);
+    	x = *(float*)&i;
+    	x = x*(1.5f - xhalf*x*x);
+    	return x;
+    }
+
+#ifndef ABS
+#define ABS( x ) ((x) > 0 ? (x) : -(x))
+#endif
+
+#ifndef MAX
+#define MAX( x, y ) ((x) > (y) ? (x) : (y))
+#endif
+
+#ifndef MIN
+#define MIN( x, y ) ((x) < (y) ? (x) : (y))
+#endif
+
+#endif /*MATH_H_*/

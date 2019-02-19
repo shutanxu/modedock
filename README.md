@@ -1,7 +1,7 @@
 # MODEDock
 
-[![download exe]](http://tcgaportal.org/aDock/dock.rar)  
-[![download tutorial]](http://tcgaportal.org/aDock/tutorial.pdf)  
+![download exe](http://tcgaportal.org/aDock/dock.rar)  
+![download tutorial](http://tcgaportal.org/aDock/tutorial.pdf)  
 
 # Overview
 ![](tcgaportal.org/aDock/aDock_line.png)

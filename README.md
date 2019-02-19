@@ -5,6 +5,6 @@
 
 # Overview
 ![](http://tcgaportal.org/aDock/aDock_line.jpg)
-![](http://tcgaportal.org/aDock/aDOck_stick.jpg)
+![](http://tcgaportal.org/aDock/aDock_stick.jpg)
 ![](http://tcgaportal.org/aDock/aDock_sphere.jpg)
 ![](http://tcgaportal.org/aDock/aDock_surface.jpg)
